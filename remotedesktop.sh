@@ -55,10 +55,11 @@ remote-desktop() {
     defaultPath=~/.vnc/passwd
     read -p "Path to VNC password file (for auto-detection): [default: $defaultPath] (type \"none\" if no password or to choose a different option) " path
     path=${path:-$defaultPath}
-    echo "Selected path to VNC password: $path"
+    echo "Selected path to VNC password file: $path"
 
     if [ -e "$path" ] && [ "$path" != "none" ]; then
         echo "VNC password found"
+        echo ""
         x11vnc -display :0 -ncache 10 -rfbauth $path
     else
         echo "VNC password not found"
@@ -69,6 +70,7 @@ remote-desktop() {
                 echo "Creating VNC password file..."
                 x11vnc -storepasswd
                 echo "Starting x11vnc..."
+                echo ""
                 x11vnc -display :0 -ncache 10 -rfbauth $path
                 ;;
             n|N )
@@ -79,6 +81,7 @@ remote-desktop() {
                         echo -n "Enter the password that will be used to access this device: "
                         read -s passwd
                         echo "Starting x11vnc..."
+                        echo ""
                         x11vnc -display :0 -ncache 10 -passwd $passwd
                         ;;
                     n|N )
@@ -88,6 +91,7 @@ remote-desktop() {
                             y|Y )
                                 echo "Starting x11vnc..."
                                 echo "WARNING! USING X11VNC WITH NO PASSWORD!"
+                                echo ""
                                 x11vnc -display :0 -ncache 10
                                 ;;
                             n|N )
