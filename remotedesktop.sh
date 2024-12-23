@@ -2,6 +2,7 @@
 
 ver=0.0.0
 verS=0.0.0A
+skipCommand=1
 
 trap catch ERR
 
@@ -52,11 +53,11 @@ remote-desktop() {
     echo "Local machine address: $ip"
 
     defaultPath=~/.vnc/passwd
-    read -p "Path to VNC password file: [default: $defaultPath] (leave blank if no password or to avoid auto-detection) " path
+    read -p "Path to VNC password file (for auto-detection): [default: $defaultPath] (type \"none\" if no password or to choose a different option) " path
     path=${path:-$defaultPath}
     echo "Selected path to VNC password: $path"
 
-    if [ -e "$path" ]; then
+    if [ -e "$path" ] && [ "$path" != "none" ]; then
         echo "VNC password found"
         x11vnc -display :0 -ncache 10 -rfbauth $path
     else
@@ -92,7 +93,7 @@ remote-desktop() {
                             n|N )
                                 remote-desktop
                                 ;;
-                            * ) 
+                            * )
                                 catch "Invalid input: $choice3"
                                 ;;
                         esac
@@ -108,9 +109,6 @@ remote-desktop() {
         esac
     fi
 }
-
-echo "Welcome to Calebh101 remote-desktop for $name"
-echo "remote-desktop $ver ($verS)"
 
 command-input() {
     echo ""
@@ -152,4 +150,23 @@ command-input() {
     fi
 }
 
-command-input
+echo "Welcome to Calebh101 remote-desktop for $name"
+echo "remote-desktop $ver ($verS)"
+
+if [ "$skipCommand" -gt 0 ]; then
+    read -p "Start remote-desktop? (y/n): " choice4
+    case "$choice4" in
+        y|Y )
+            echo "Calling remote-desktop..."
+            remote-desktop
+            ;;
+        n|N )
+            quit
+            ;;
+        * )
+            catch "Invalid input: $choice4"
+            ;;
+    esac
+else
+    command-input
+fi
