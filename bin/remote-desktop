@@ -1,0 +1,5 @@
+#!/bin/bash
+
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+PARENT_DIR="$(dirname "$SCRIPT_DIR")"
+"$PARENT_DIR/remotedesktop.sh"

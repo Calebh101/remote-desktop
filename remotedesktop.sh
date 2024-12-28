@@ -60,7 +60,7 @@ remote-desktop() {
     if [ -e "$path" ] && [ "$path" != "none" ]; then
         echo "VNC password found"
         echo ""
-        x11vnc -display :0 -ncache 10 -rfbauth $path
+        x11vnc -forever -loop -noxdamage -display :0 -ncache 10 -rfbauth $path
     else
         echo "VNC password not found"
         read -p "Do you want to create a new password file? (y/n): " choice
@@ -71,7 +71,7 @@ remote-desktop() {
                 x11vnc -storepasswd
                 echo "Starting x11vnc..."
                 echo ""
-                x11vnc -display :0 -ncache 10 -rfbauth $path
+                x11vnc -forever -loop -noxdamage -display :0 -ncache 10 -rfbauth $path
                 ;;
             n|N )
                 read -p "Do you want to use a temporary password? (y/n): " choice2
@@ -82,7 +82,7 @@ remote-desktop() {
                         read -s passwd
                         echo "Starting x11vnc..."
                         echo ""
-                        x11vnc -display :0 -ncache 10 -passwd $passwd
+                        x11vnc -forever -loop -noxdamage -display :0 -ncache 10 -passwd $passwd
                         ;;
                     n|N )
                         echo "Not using password..."
@@ -92,7 +92,7 @@ remote-desktop() {
                                 echo "Starting x11vnc..."
                                 echo "WARNING! USING X11VNC WITH NO PASSWORD!"
                                 echo ""
-                                x11vnc -display :0 -ncache 10
+                                x11vnc -forever -loop -noxdamage -display :0 -ncache 10
                                 ;;
                             n|N )
                                 remote-desktop
